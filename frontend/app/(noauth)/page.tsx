@@ -1,9 +1,12 @@
 "use client";
 
 import LandingNavbar from "@/components/landingPage/LandingNavbar";
+import SigninForm from "@/components/landingPage/SigninForm";
+import SignupForm from "@/components/landingPage/SignupForm";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -40,6 +43,11 @@ export default function Home() {
               <DialogHeader>
                 <DialogTitle>Sign in</DialogTitle>
               </DialogHeader>
+              <DialogDescription>
+                Log in by writing your email or username below (TEMP USE
+                USERNAME)
+              </DialogDescription>
+              <SigninForm />
             </DialogContent>
           </Dialog>
         </div>
@@ -58,6 +66,10 @@ export default function Home() {
               <DialogHeader>
                 <DialogTitle>Sign up</DialogTitle>
               </DialogHeader>
+              <DialogDescription>
+                Create a user by filling in the form below
+              </DialogDescription>
+              <SignupForm />
             </DialogContent>
           </Dialog>
         </div>

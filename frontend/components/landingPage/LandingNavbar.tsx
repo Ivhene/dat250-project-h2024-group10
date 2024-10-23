@@ -1,4 +1,4 @@
-import { createUser, getUserByUsername } from "@/lib/API";
+import { createUser, getUserByUsername, signOut } from "@/lib/API";
 import { Button } from "../ui/button";
 
 export default function LandingNavbar() {
@@ -6,6 +6,14 @@ export default function LandingNavbar() {
     <nav className="w-full h-18 p-4 flex items-center bg-neutral-100">
       <div>LOGO</div>
       <div className="mr-0 ml-auto space-x-4">
+        <Button
+          onClick={async () => {
+            signOut();
+          }}
+          className="bg-neutral-700 hover:bg-neutral-950"
+        >
+          TEMP SIGN OUT
+        </Button>
         <Button
           onClick={async () => {
             getUserByUsername("tester");

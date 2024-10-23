@@ -1,6 +1,34 @@
+"use server";
+
+import { redirect } from "next/navigation";
+import {
+  CheckSessionOptions,
+  createSession,
+  getUserFromSession,
+  isSessionExpired,
+  isUserSignedIn,
+  logout,
+} from "./session";
 import { User } from "./types";
+import { NextResponse } from "next/server";
 
 const url = "http://localhost:8080";
+
+export async function getUser() {
+  return await getUserFromSession();
+}
+
+export async function checkUserLoggedIn(user?: CheckSessionOptions) {
+  return await isUserSignedIn(user);
+}
+
+export async function checkSessionExpired() {
+  return await isSessionExpired();
+}
+
+export async function signOut() {
+  logout();
+}
 
 export async function getUsers() {
   const response = await fetch(`${url}/users`, {
@@ -29,7 +57,11 @@ export async function getUserByUsername(username: string) {
     throw new Error("Failed to fetch users");
   }
 
-  return await response.json();
+  const user = await response.json();
+
+  await createSession({ username: user.username, email: user.email });
+
+  return user;
 }
 
 export async function createUser(user: User) {
@@ -45,5 +77,12 @@ export async function createUser(user: User) {
     throw new Error("Failed to create user");
   }
 
-  return await response.json();
+  const returnedUser = await response.json();
+
+  await createSession({
+    username: returnedUser.username,
+    email: returnedUser.email,
+  });
+
+  return returnedUser;
 }
