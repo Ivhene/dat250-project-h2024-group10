@@ -4,18 +4,18 @@ import { redirect } from "next/navigation";
 import {
   CheckSessionOptions,
   createSession,
-  getUserFromSession,
+  getUsernameFromSession,
   isSessionExpired,
   isUserSignedIn,
   logout,
 } from "./session";
-import { User } from "./types";
+import { Poll, User } from "./types";
 import { NextResponse } from "next/server";
 
 const url = "http://localhost:8080";
 
 export async function getUser() {
-  return await getUserFromSession();
+  return await getUsernameFromSession();
 }
 
 export async function checkUserLoggedIn(user?: CheckSessionOptions) {
@@ -85,4 +85,57 @@ export async function createUser(user: User) {
   });
 
   return returnedUser;
+}
+
+// Function to get all polls
+export async function getPolls() {
+  const response = await fetch(`${url}/polls`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    cache: "no-store", // Disable caching
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch users");
+  }
+
+  console.log(response);
+
+  const polls = await response.json();
+
+  console.log(polls);
+
+  return polls;
+}
+
+export async function getPollById(id: number) {
+  const response = await fetch(`${url}/polls/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch user");
+  }
+
+  return await response.json();
+}
+
+// Function to create a user by making a POST request
+export async function createPoll(poll: Poll) {
+  const response = await fetch(`${url}/polls`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(poll), // Send the poll object as JSON in the body
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create user");
+  }
+
+  return await response.json();
 }

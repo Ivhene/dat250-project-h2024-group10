@@ -11,8 +11,6 @@ const PUBLIC_PATHS = [
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  console.log("Path: " + pathname);
-
   // Allow access to specified public paths without authentication
   if (
     PUBLIC_PATHS.some((path) =>
@@ -26,13 +24,8 @@ export async function middleware(req: NextRequest) {
   const signedIn = await isUserSignedIn();
   //  const expired = await isSessionExpired();
 
-  console.log(
-    `User signed in: ${signedIn}, Session expired: ${/*expired*/ ""}`
-  );
-
   // If no session exists or session has expired, redirect to root ("/")
   if (!signedIn /*|| expired */) {
-    console.log("Redirecting to root due to authentication failure.");
     return NextResponse.redirect(new URL("/", req.url));
   }
 

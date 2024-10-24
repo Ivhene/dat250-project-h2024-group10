@@ -33,7 +33,6 @@ export async function decrypt(session: string | undefined = "") {
     });
     return payload;
   } catch (error) {
-    console.error("Failed to verify session", error);
     return null;
   }
 }
@@ -132,7 +131,6 @@ export async function isSessionExpired() {
   const { expiresAt } = payload;
 
   if (!expiresAt) {
-    console.log("No expiration time found in session.");
     return true;
   }
 
@@ -149,7 +147,7 @@ export async function isSessionExpired() {
   return false;
 }
 
-export async function getUserFromSession() {
+export async function getUsernameFromSession() {
   if ((await isSessionExpired()) || !(await isUserSignedIn())) return null;
 
   const session = cookies().get("session")?.value;
@@ -158,5 +156,5 @@ export async function getUserFromSession() {
 
   if (!decryptedSess) return null;
 
-  return decryptedSess;
+  return decryptedSess.username as string;
 }
