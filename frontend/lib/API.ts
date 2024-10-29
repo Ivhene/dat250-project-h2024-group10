@@ -1,6 +1,33 @@
-import { User } from "./types";
+"use server";
+
+import { redirect } from "next/navigation";
+import {
+  CheckSessionOptions,
+  createSession,
+  getUsernameFromSession,
+  isSessionExpired,
+  isUserSignedIn,
+  logout,
+} from "./session";
+import { Poll, User } from "./types";
 
 const url = "http://localhost:8080";
+
+export async function getUser() {
+  return await getUsernameFromSession();
+}
+
+export async function checkUserLoggedIn(user?: CheckSessionOptions) {
+  return await isUserSignedIn(user);
+}
+
+export async function checkSessionExpired() {
+  return await isSessionExpired();
+}
+
+export async function signOut() {
+  logout();
+}
 
 export async function getUsers() {
   const response = await fetch(`${url}/users`, {
@@ -29,7 +56,11 @@ export async function getUserByUsername(username: string) {
     throw new Error("Failed to fetch users");
   }
 
-  return await response.json();
+  const user = await response.json();
+
+  await createSession({ username: user.username, email: user.email });
+
+  return user;
 }
 
 export async function createUser(user: User) {
@@ -39,6 +70,66 @@ export async function createUser(user: User) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(user), // Send the user object as JSON in the body
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to create user");
+  }
+
+  const returnedUser = await response.json();
+
+  await createSession({
+    username: returnedUser.username,
+    email: returnedUser.email,
+  });
+
+  return returnedUser;
+}
+
+// Function to get all polls
+export async function getPolls() {
+  const response = await fetch(`${url}/polls`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+    cache: "no-store", // Disable caching
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch users");
+  }
+
+  console.log(response);
+
+  const polls = await response.json();
+
+  console.log(polls);
+
+  return polls;
+}
+
+export async function getPollById(id: number) {
+  const response = await fetch(`${url}/polls/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch user");
+  }
+
+  return await response.json();
+}
+
+// Function to create a user by making a POST request
+export async function createPoll(poll: Poll) {
+  const response = await fetch(`${url}/polls`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(poll), // Send the poll object as JSON in the body
   });
 
   if (!response.ok) {
