@@ -9,9 +9,11 @@ import {
   isUserSignedIn,
   logout,
 } from "./session";
-import { Poll, User } from "./types";
+import { Poll, PollToSend, User } from "./types";
 
 const url = "http://localhost:8080";
+
+// TEMP
 
 export async function getUser() {
   return await getUsernameFromSession();
@@ -98,11 +100,7 @@ export async function getPolls() {
     throw new Error("Failed to fetch users");
   }
 
-  console.log(response);
-
   const polls = await response.json();
-
-  console.log(polls);
 
   return polls;
 }
@@ -123,7 +121,7 @@ export async function getPollById(id: number) {
 }
 
 // Function to create a user by making a POST request
-export async function createPoll(poll: Poll) {
+export async function createPoll(poll: PollToSend) {
   const response = await fetch(`${url}/polls`, {
     method: "POST",
     headers: {
@@ -133,6 +131,8 @@ export async function createPoll(poll: Poll) {
   });
 
   if (!response.ok) {
+    const errorMessage = await response.text();
+    console.error("Failed to create poll:", errorMessage);
     throw new Error("Failed to create user");
   }
 

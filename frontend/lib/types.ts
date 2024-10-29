@@ -28,3 +28,19 @@ export type VoteOption = {
   poll: Poll | null;
   votes: Vote[];
 };
+
+export type PollToSend = {
+  id: string;
+  question: string;
+  publishedAt: string;
+  validUntil: string;
+  createdUser: User;
+  options: VoteOptionToSend[];
+};
+
+export type VoteOptionToSend = {
+  id: string;
+  caption: string;
+  presentationOrder: number;
+  votes: Vote[];
+};
