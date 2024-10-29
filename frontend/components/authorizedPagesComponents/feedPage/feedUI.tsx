@@ -7,5 +7,5 @@ type FeedUIProps = {
 export default function FeedUI({ polls }: FeedUIProps) {
   console.log(polls);
 
-  return <div className="h-full w-full bg-red-300 p-4">FEED UI HERE</div>;
+  return <div className="h-full w-full p-4">FEED UI HERE</div>;
 }

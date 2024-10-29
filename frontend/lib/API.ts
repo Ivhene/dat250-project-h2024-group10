@@ -10,7 +10,6 @@ import {
   logout,
 } from "./session";
 import { Poll, User } from "./types";
-import { NextResponse } from "next/server";
 
 const url = "http://localhost:8080";
 
