@@ -28,7 +28,7 @@ export default function CommonNavbar() {
 
   return (
     <nav className="w-full h-18 flex items-center bg-neutral-100">
-      <div className="p-4 mr-2">LOGO</div>
+      {/*<div className="p-4 mr-2">LOGO</div>*/}
       <Link href="/feed" className="p-4">
         Feed
       </Link>

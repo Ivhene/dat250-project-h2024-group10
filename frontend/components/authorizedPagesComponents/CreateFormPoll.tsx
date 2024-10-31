@@ -26,6 +26,8 @@ import { useState } from "react";
 import { createPoll, getUser, getUserByUsername } from "@/lib/API";
 import { Poll, PollToSend } from "@/lib/types";
 import { generateId } from "@/lib/functions";
+import { revalidatePath } from "next/cache";
+import { usePathname } from "next/navigation";
 
 const formSchema = z.object({
   question: z.string().min(2).max(50),
@@ -38,6 +40,7 @@ type CreatePollFormProps = {
 
 export default function CreatePollForm({ close }: CreatePollFormProps) {
   const [options, setOptions] = useState<string[]>(["", ""]); // Start with 2 empty options
+  const path = usePathname();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -92,6 +95,7 @@ export default function CreatePollForm({ close }: CreatePollFormProps) {
 
     newPoll = await createPoll(newPoll);
     close();
+    window.location.reload();
   }
 
   return (
