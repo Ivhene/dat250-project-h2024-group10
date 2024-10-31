@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -24,8 +26,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    public ResponseEntity<User> addUser(@RequestBody User user, HttpServletResponse response) {
         User registeredUser = domainManager.addUser(user);
+
+        Cookie userCookie = new Cookie("username", user.getUsername());
+        userCookie.setMaxAge(7 * 24 * 60 * 60);
+        userCookie.setPath("/");
+        response.addCookie(userCookie);
 
         return ResponseEntity.status(201).body(registeredUser);
     }
