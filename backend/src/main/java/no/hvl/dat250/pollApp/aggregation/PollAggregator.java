@@ -1,8 +1,11 @@
-package no.hvl.dat250.pollApp.service;
+package no.hvl.dat250.pollApp.aggregation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import no.hvl.dat250.pollApp.aggregation.VoteAggregationRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -12,6 +15,11 @@ public class PollAggregator {
     private final static String EXCHANGE_NAME = "vote_events";
     private Connection connection;
     private Channel channel;
+
+    @Autowired
+    private VoteRepository voteRepository;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @PostConstruct
     public void startListening() {
@@ -35,7 +43,7 @@ public class PollAggregator {
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 String message = new String(delivery.getBody(), "UTF-8");
                 System.out.println("Received '" + delivery.getEnvelope().getRoutingKey() + "':'" + message + "'");
-                aggregateVoteData(message);
+                saveVoteData(message);
             };
 
             // Start consuming messages asynchronously
@@ -47,10 +55,24 @@ public class PollAggregator {
         }
     }
 
-    private void aggregateVoteData(String voteData) {
-        // Add aggregation logic here
-        System.out.println("Aggregating vote data: " + voteData);
+    private void saveVoteData(String voteData) {
+        System.out.println("Processing vote data: " + voteData);
+
+        try {
+            // Parse the vote message into a VoteMessage object
+            VoteMessage voteMessage = objectMapper.readValue(voteData, VoteMessage.class);
+
+            voteRepository.save(voteMessage);
+
+
+            System.out.println("Saved individual vote for pollId " + voteMessage.getPollId() + " and optionId " + voteMessage.getVoteOptionId());
+
+        } catch (Exception e) {
+            System.err.println("Error while saving vote data: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
+
 
     @PreDestroy
     public void cleanUp() {
