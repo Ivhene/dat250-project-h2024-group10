@@ -12,7 +12,7 @@ import {
 import { Poll, PollToSend, User } from "./types";
 import { generateId } from "./functions";
 
-const url = "http://localhost:8080";
+const url = "http://localhost:3000";
 
 // TEMP
 
