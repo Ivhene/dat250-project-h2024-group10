@@ -10,6 +10,7 @@ import {
   logout,
 } from "./session";
 import { Poll, PollToSend, User } from "./types";
+import { generateId } from "./functions";
 
 const url = "http://localhost:8080";
 
@@ -134,6 +135,41 @@ export async function createPoll(poll: PollToSend) {
     const errorMessage = await response.text();
     console.error("Failed to create poll:", errorMessage);
     throw new Error("Failed to create user");
+  }
+
+  return await response.json();
+}
+
+export async function createVote(voteoptionId: string, poll: Poll) {
+  const user = await getUserByUsername("Test");
+  const option = poll.options.find((option) => option.id === voteoptionId);
+
+  if (!option) {
+    return;
+  }
+
+  const vote = {
+    id: generateId(),
+    publishedAt: new Date(Date.now()).toISOString().split(".")[0] + "Z",
+    option: option,
+    user: user,
+  };
+
+  const response = await fetch(
+    `${url}/polls/${poll.id}/voteoptions/${voteoptionId}/votes`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(vote), // Send the poll object as JSON in the body
+    }
+  );
+
+  if (!response.ok) {
+    const errorMessage = await response.text();
+    console.error("Failed to create vote:", errorMessage);
+    throw new Error("Failed to create vote");
   }
 
   return await response.json();
