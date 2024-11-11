@@ -60,10 +60,10 @@ jobs:
       - name: Build with Next.js
         run: npm run build 
         working-directory: ./frontend #${{ steps.detect-package-manager.outputs.runner }} npm run build # Error below: could not find the file package.json. Must find path to frontend directory.
-      #- name: Upload artifact
-      #  uses: actions/upload-pages-artifact@v3
-      #  with:
-      #    path: ./out
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
 
   deploy:
     runs-on: ubuntu-latest
