@@ -67,6 +67,7 @@ export async function getUserByUsername(username: string) {
     headers: {
       "Content-Type": "application/json",
     },
+    cache: "no-store",
   });
 
   if (!response.ok) {
@@ -75,7 +76,8 @@ export async function getUserByUsername(username: string) {
 
   const user = await response.json();
 
-  await createSession({ username: user.username, email: user.email });
+  // Need an actual login function instead
+  //  await createSession({ username: user.username, email: user.email });
 
   return user;
 }
