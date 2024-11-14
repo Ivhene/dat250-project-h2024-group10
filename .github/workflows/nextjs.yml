@@ -1,7 +1,10 @@
 # To get started with Next.js see: https://nextjs.org/docs/getting-started
 name: Next.js File Test and Deploy Authentication
 
-on: [push]
+on:
+  # Runs on pushes targeting the default branch
+  push:
+    branches: [$default-branch]
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
