@@ -19,21 +19,6 @@ export async function getUser() {
   return await getUsernameFromSession();
 }
 
-export async function checkCookie(cookieName: string): Promise<string | null> {
-  try {
-    const response = await fetch(`/api/check-cookie?cookieName=${cookieName}`);
-    if (response.ok) {
-      return await response.text(); // Returns the cookie value if found
-    } else {
-      console.log("Cookie not found");
-      return null;
-    }
-  } catch (error) {
-    console.error("Error checking cookie:", error);
-    return null;
-  }
-}
-
 export async function checkUserLoggedIn(user?: CheckSessionOptions) {
   return await isUserSignedIn(user);
 }
