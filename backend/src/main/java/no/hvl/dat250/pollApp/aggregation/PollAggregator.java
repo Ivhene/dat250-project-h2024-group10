@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import no.hvl.dat250.pollApp.aggregation.VoteAggregationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

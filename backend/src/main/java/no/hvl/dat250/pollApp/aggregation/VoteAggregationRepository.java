@@ -16,19 +16,19 @@ public class VoteAggregationRepository {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<VoteAggregationResult> aggregateVotesByPollId(String pollId) {
+    public List<VoteAggregationResult> aggregateVotesForAllPolls() {
         Aggregation aggregation = Aggregation.newAggregation(
-                Aggregation.match(Criteria.where("pollId").is(pollId)), // Match by pollId
-                Aggregation.group("optionId") // Group by vote option ID
-                        .count().as("count"), // Count votes for each option
-                Aggregation.project("count").and("optionId").previousOperation() // Project the results
+                Aggregation.group("pollId", "optionId")
+                        .count().as("count"),
+                Aggregation.project("count")
+                        .and("pollId").previousOperation()
+                        .and("optionId").previousOperation()
         );
 
-        // Execute the aggregation query and map to VoteAggregationResult class
         AggregationResults<VoteAggregationResult> results = mongoTemplate.aggregate(
-                aggregation, "votes", VoteAggregationResult.class // "votes" is the MongoDB collection
+                aggregation, "votes", VoteAggregationResult.class
         );
 
-        return results.getMappedResults(); // Return a list of VoteAggregationResult objects
+        return results.getMappedResults();
     }
 }

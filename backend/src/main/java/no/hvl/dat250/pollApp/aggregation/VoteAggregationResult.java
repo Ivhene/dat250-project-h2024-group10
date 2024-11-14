@@ -4,19 +4,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class VoteAggregationResult {
 
+    @JsonProperty("pollId")
+    private String pollId;
+
     @JsonProperty("voteOptionId")
-    private String voteOptionId; // ID of the vote option
+    private String voteOptionId;
 
     @JsonProperty("count")
-    private long count; // Number of votes for this option
+    private long count;
 
     // Constructor
-    public VoteAggregationResult(String voteOptionId, long count) {
+    public VoteAggregationResult(String pollId, String voteOptionId, long count) {
+        this.pollId = pollId;
         this.voteOptionId = voteOptionId;
         this.count = count;
     }
 
     // Getters and Setters
+    public String getPollId() {
+        return pollId;
+    }
+
+    public void setPollId(String pollId) {
+        this.pollId = pollId;
+    }
+
     public String getVoteOptionId() {
         return voteOptionId;
     }
@@ -32,13 +44,4 @@ public class VoteAggregationResult {
     public void setCount(long count) {
         this.count = count;
     }
-
-    @Override
-    public String toString() {
-        return "VoteAggregationResult{" +
-                "voteOptionId='" + voteOptionId + '\'' +
-                ", count=" + count +
-                '}';
-    }
 }
-
