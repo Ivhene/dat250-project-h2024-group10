@@ -1,3 +1,4 @@
+# Built upon Next.js's /actions/starter-workflow on GitHub: https://github.com/actions/starter-workflows/blob/main/pages/nextjs.yml
 # To get started with Next.js see: https://nextjs.org/docs/getting-started
 name: Next.js File Test and Deploy Authentication
 
