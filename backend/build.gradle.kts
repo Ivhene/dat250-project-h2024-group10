@@ -29,6 +29,7 @@ dependencies {
 	testImplementation("com.h2database:h2")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("org.postgresql:postgresql:42.6.0")
 }
 
 tasks.withType<Test> {

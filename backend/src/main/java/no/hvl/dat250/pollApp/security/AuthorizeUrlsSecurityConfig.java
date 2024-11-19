@@ -24,12 +24,12 @@ public class AuthorizeUrlsSecurityConfig {
                         authorizeHttpRequests
                                 .requestMatchers("/api/auth/login").permitAll()
                                 .requestMatchers("/**").permitAll()
-                                .anyRequest().authenticated()// Allow login endpoint without authentication
+                                .anyRequest().authenticated() // Allow login endpoint without authentication
                 )
                 .formLogin(withDefaults())
                 .httpBasic().disable()
                 .csrf().disable();
-        return http. build();
+        return http.build();
     }
 
     @Bean
@@ -37,12 +37,12 @@ public class AuthorizeUrlsSecurityConfig {
         UserDetails user = User.withDefaultPasswordEncoder()
                 .username("user")
                 .password("password")
-                .roles("ROLE_USER")
+                .roles("USER") // Removed "ROLE_" prefix
                 .build();
         UserDetails admin = User.withDefaultPasswordEncoder()
                 .username("admin")
                 .password("password")
-                .roles("ROLE_ADMIN", "ROLE_USER")
+                .roles("ADMIN", "USER") // Removed "ROLE_" prefix
                 .build();
         return new InMemoryUserDetailsManager(user, admin);
     }
@@ -52,12 +52,3 @@ public class AuthorizeUrlsSecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 }
-
-
-// withDefaultPasswordEncoder()
-// Using this method is not considered safe for production,
-// but is acceptable for demos and getting started.
-// For production purposes, ensure the password is encoded externally.
-// See the method Javadoc for additional details.
-// There are no plans to remove this support.
-// It is deprecated to indicate that this is considered insecure for production purposes

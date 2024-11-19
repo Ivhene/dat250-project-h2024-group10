@@ -58,8 +58,9 @@ public class AuthController {
                 userDetails = User
                         .withUsername(authRequest.getUsername())
                         .password(authRequest.getPassword())
-                        .authorities("ROLE_USER", "ROLE_ADMIN")
+                        .authorities("USER", "ADMIN") // Remove "ROLE_" prefix here
                         .build();
+
 
                 // Add the user to the UserDetailsService (only works with InMemoryUserDetailsManager)
                 if (userDetailsService instanceof InMemoryUserDetailsManager) {
