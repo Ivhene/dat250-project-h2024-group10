@@ -32,8 +32,8 @@ public class PollController {
 
     // Fetches both Polls and their voteOptions with the current count for each option
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<PollWithVotes>> getPollsWithVoteCounts() {
-        List<PollWithVotes> response = pollService.getPollsWithVoteCounts();
+    public ResponseEntity<List<Poll>> getPollsWithVoteCounts() {
+        List<Poll> response = pollService.getPollsWithVoteCounts();
         return ResponseEntity.ok(response);
     }
 

@@ -40,8 +40,8 @@ public class VoteController {
             try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
                 channel.exchangeDeclare(EXCHANGE_NAME, "topic");
 
-                String message = String.format("{\"pollId\":\"%s\",\"voteOptionId\":\"%s\",\"voteId\":\"%s\",\"choice\":\"%s\"}",
-                        pollId, voteoptionId, vote.getId(), vote.getOption());
+                String message = String.format("{\"pollId\":\"%s\",\"voteOptionId\":\"%s\",\"voteId\":\"%s\"}",
+                        pollId, voteoptionId, vote.getId());
 
                 String routingKey = "vote.cast";
                 channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());

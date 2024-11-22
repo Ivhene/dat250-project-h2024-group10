@@ -11,24 +11,14 @@ public class VoteMessage {
     private String pollId;
     private String voteOptionId;
     private String voteId;
-    private String choice;
 
     public VoteMessage() {
     }
 
-    public VoteMessage(String pollId, String voteOptionId, String voteId, String choice) {
+    public VoteMessage(String pollId, String voteOptionId, String voteId) {
         this.pollId = pollId;
         this.voteOptionId = voteOptionId;
         this.voteId = voteId;
-        this.choice = choice;
-    }
-
-    public String getChoice() {
-        return choice;
-    }
-
-    public void setChoice(String choice) {
-        this.choice = choice;
     }
 
     public String getVoteId() {
@@ -69,7 +59,6 @@ public class VoteMessage {
                 "pollId='" + pollId + '\'' +
                 ", voteOptionId='" + voteOptionId + '\'' +
                 ", voteId='" + voteId + '\'' +
-                ", choice='" + choice + '\'' +
                 '}';
     }
 }

@@ -16,7 +16,7 @@ public class VoteAggregationResult {
     // Constructor
     public VoteAggregationResult(String pollId, String voteOptionId, long count) {
         this.pollId = pollId;
-        this.voteOptionId = voteOptionId;
+        this.voteOptionId = (voteOptionId != null) ? voteOptionId : "Unknown";
         this.count = count;
     }
 
@@ -43,5 +43,14 @@ public class VoteAggregationResult {
 
     public void setCount(long count) {
         this.count = count;
+    }
+
+    @Override
+    public String toString() {
+        return "VoteAggregationResult{" +
+                "pollId='" + pollId + '\'' +
+                ", voteOptionId='" + voteOptionId + '\'' +
+                ", count=" + count +
+                '}';
     }
 }

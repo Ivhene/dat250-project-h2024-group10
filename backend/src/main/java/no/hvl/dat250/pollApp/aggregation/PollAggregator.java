@@ -56,16 +56,14 @@ public class PollAggregator {
 
     private void saveVoteData(String voteData) {
         System.out.println("Processing vote data: " + voteData);
-
         try {
-            // Parse the vote message into a VoteMessage object
+            // Ensure that you're directly deserializing into VoteMessage
             VoteMessage voteMessage = objectMapper.readValue(voteData, VoteMessage.class);
 
+            // Save the message in your repository
             voteRepository.save(voteMessage);
 
-
             System.out.println("Saved individual vote for pollId " + voteMessage.getPollId() + " and optionId " + voteMessage.getVoteOptionId());
-
         } catch (Exception e) {
             System.err.println("Error while saving vote data: " + e.getMessage());
             e.printStackTrace();
