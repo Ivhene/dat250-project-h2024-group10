@@ -30,7 +30,6 @@ public class PollAggregator {
             connection = factory.newConnection();
             channel = connection.createChannel();
 
-            // Declare exchange and queue
             channel.exchangeDeclare(EXCHANGE_NAME, "topic");
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
             String routingKey = "vote.cast";
@@ -38,14 +37,12 @@ public class PollAggregator {
 
             System.out.println("Waiting for messages. To exit press CTRL+C");
 
-            // Define the consumer callback
             DeliverCallback deliverCallback = (consumerTag, delivery) -> {
                 String message = new String(delivery.getBody(), "UTF-8");
                 System.out.println("Received '" + delivery.getEnvelope().getRoutingKey() + "':'" + message + "'");
                 saveVoteData(message);
             };
 
-            // Start consuming messages asynchronously
             channel.basicConsume(QUEUE_NAME, true, deliverCallback, consumerTag -> {});
 
         } catch (Exception e) {
@@ -57,10 +54,8 @@ public class PollAggregator {
     private void saveVoteData(String voteData) {
         System.out.println("Processing vote data: " + voteData);
         try {
-            // Ensure that you're directly deserializing into VoteMessage
             VoteMessage voteMessage = objectMapper.readValue(voteData, VoteMessage.class);
 
-            // Save the message in your repository
             voteRepository.save(voteMessage);
 
             System.out.println("Saved individual vote for pollId " + voteMessage.getPollId() + " and optionId " + voteMessage.getVoteOptionId());
