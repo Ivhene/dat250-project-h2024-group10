@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { getUserByUsername } from "@/lib/API";
+import { getUserByUsername, login } from "@/lib/API";
 import { createSession } from "@/lib/session";
 import { useRouter } from "next/navigation";
 
@@ -37,10 +37,12 @@ export default function SigninForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    const user = await getUserByUsername(values.user);
-    if (user && user.username && user.email) {
-      router.push("/feed");
-    }
+
+    //const user = await getUserByUsername(values.user);
+    await login(values.user, "pass");
+    // if (user && user.username && user.email) {
+    router.push("/feed");
+    //}
   }
 
   return (

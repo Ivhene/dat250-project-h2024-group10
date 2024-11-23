@@ -41,6 +41,7 @@ export default function SignupForm() {
     // ✅ This will be type-safe and validated.
     const user = await createUser({
       ...values,
+      password: "",
       votes: [],
       polls: [],
     });
