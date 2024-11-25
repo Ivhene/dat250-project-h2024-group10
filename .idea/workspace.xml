@@ -6,10 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="415d58f2-4aa8-4a0c-b3ee-d1bbc7e64612" name="Changes" comment="Fixed authentication error and updated some users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/controller/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/security/AuthorizeUrlsSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/security/AuthorizeUrlsSecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/test/java/no/hvl/dat250/pollApp/security/AuthIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/no/hvl/dat250/pollApp/security/AuthIntegrationTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/test/java/no/hvl/dat250/pollApp/security/AuthTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/no/hvl/dat250/pollApp/security/AuthTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +220,7 @@
       <workItem from="1731595003563" duration="8027000" />
       <workItem from="1732022393814" duration="4029000" />
       <workItem from="1732541842489" duration="198000" />
-      <workItem from="1732542062067" duration="2171000" />
+      <workItem from="1732542062067" duration="3474000" />
     </task>
     <task id="LOCAL−00001" summary="Removed Old Cookie Attempt, Implemented new Authorization and Authentication along with tests.">
       <option name="closed" value="true" />
@@ -232,7 +229,14 @@
       <option name="presentableId" value="LOCAL−00001" />
       <updated>1731603061519</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL−00002" summary="Fixed authentication error and updated some users">
+      <option name="closed" value="true" />
+      <created>1732544265385</created>
+      <option name="number" value="LOCAL−00002" />
+      <option name="presentableId" value="LOCAL−00002" />
+      <updated>1732544265385</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
