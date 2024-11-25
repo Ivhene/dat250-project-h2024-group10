@@ -44,23 +44,23 @@ public class AuthController {
     }
 
     public AuthResponse authenticate(AuthRequest authRequest) {
-            // Authenticate the user
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
-            );
+
             String token;
             UserDetails userDetails;
             // Load user details
             try {
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
+                );
                  userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
                  token = jwtUtil.generateToken(userDetails.getUsername(), userDetails.getAuthorities());
-            } catch (UsernameNotFoundException e) {
-                userDetails = User
-                        .withUsername(authRequest.getUsername())
+            } catch (AuthenticationException e) {
+                System.out.println("UsernameNotFoundException");
+                userDetails = User.withDefaultPasswordEncoder()
+                        .username(authRequest.getUsername())
                         .password(authRequest.getPassword())
-                        .authorities("USER", "ADMIN") // Remove "ROLE_" prefix here
+                        .authorities("USER", "ANONYMOUS") // Remove "ROLE_" prefix here
                         .build();
-
 
                 // Add the user to the UserDetailsService (only works with InMemoryUserDetailsManager)
                 if (userDetailsService instanceof InMemoryUserDetailsManager) {
@@ -72,8 +72,6 @@ public class AuthController {
             }
 
             // Generate the JWT token
-
-
             return new AuthResponse(token);
     }
 }

@@ -24,7 +24,6 @@ public class AuthorizeUrlsSecurityConfig {
                         authorizeHttpRequests
                                 .requestMatchers("/api/auth/login").permitAll()
                                 .requestMatchers("/**").permitAll()
-                                .anyRequest().authenticated() // Allow login endpoint without authentication
                 )
                 .formLogin(withDefaults())
                 .httpBasic().disable()
@@ -34,17 +33,12 @@ public class AuthorizeUrlsSecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
+        UserDetails anonymous = User.withDefaultPasswordEncoder()
+                .username("anonymous")
                 .password("password")
-                .roles("USER") // Removed "ROLE_" prefix
+                .roles("ANONYMOUS") // Removed "ROLE_" prefix
                 .build();
-        UserDetails admin = User.withDefaultPasswordEncoder()
-                .username("admin")
-                .password("password")
-                .roles("ADMIN", "USER") // Removed "ROLE_" prefix
-                .build();
-        return new InMemoryUserDetailsManager(user, admin);
+        return new InMemoryUserDetailsManager(anonymous);
     }
 
     @Bean

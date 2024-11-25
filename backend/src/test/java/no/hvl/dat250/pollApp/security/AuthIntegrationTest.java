@@ -3,10 +3,6 @@ package no.hvl.dat250.pollApp.security;
 import no.hvl.dat250.pollApp.controller.AuthController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.AuthenticationManager;
 
 import java.util.ArrayList;
 import java.util.Date;

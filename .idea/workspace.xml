@@ -4,21 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="415d58f2-4aa8-4a0c-b3ee-d1bbc7e64612" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/controller/AuthController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/security/AuthRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/security/AuthResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/security/AuthorizeUrlsSecurityConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/security/JwtUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/test/java/no/hvl/dat250/pollApp/security/AuthIntegrationTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/test/java/no/hvl/dat250/pollApp/security/AuthTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+    <list default="true" id="415d58f2-4aa8-4a0c-b3ee-d1bbc7e64612" name="Changes" comment="Fixed authentication error and updated some users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/security/AuthorizeUrlsSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/security/AuthorizeUrlsSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/no/hvl/dat250/pollApp/security/AuthIntegrationTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/no/hvl/dat250/pollApp/security/AuthIntegrationTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/no/hvl/dat250/pollApp/security/AuthTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/no/hvl/dat250/pollApp/security/AuthTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -72,6 +63,9 @@
     &quot;accountId&quot;: &quot;c30e5ab2-255a-44c6-a692-abf00c72f883&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -81,37 +75,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.AuthIntegrationTest.executor": "Run",
-    "Gradle.AuthIntegrationTest.testJwtUtilGenerateToken.executor": "Debug",
-    "Gradle.AuthTest (1).executor": "Run",
-    "Gradle.AuthTest.executor": "Run",
-    "Gradle.Build backend.executor": "Run",
-    "Gradle.Download Sources.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.PollAppApplication.executor": "Run",
-    "git-widget-placeholder": "Authentication-and-Authorization",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Main/Documents/GitHub/dat250-project-h2024-group10/backend/settings.gradle.kts",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.AuthIntegrationTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.AuthIntegrationTest.testJwtUtilGenerateToken.executor&quot;: &quot;Debug&quot;,
+    &quot;Gradle.AuthTest (1).executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.AuthTest.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build backend.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.PollAppApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Authentication-and-Authorization&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Main/Documents/GitHub/dat250-project-h2024-group10/backend/settings.gradle.kts&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Main\\Documents\\GitHub\\dat250-project-h2024-group10\\frontend\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Main\Documents\GitHub\dat250-project-h2024-group10\backend\src\main\java\no\hvl\dat250\pollApp\controller" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.AuthTest (1)">
+  <component name="RunManager" selected="Spring Boot.PollAppApplication">
     <configuration name="AuthIntegrationTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -221,8 +220,19 @@
       <workItem from="1731587057750" duration="1721000" />
       <workItem from="1731588904139" duration="1847000" />
       <workItem from="1731590783770" duration="4181000" />
-      <workItem from="1731595003563" duration="7707000" />
+      <workItem from="1731595003563" duration="8027000" />
+      <workItem from="1732022393814" duration="4029000" />
+      <workItem from="1732541842489" duration="198000" />
+      <workItem from="1732542062067" duration="2171000" />
     </task>
+    <task id="LOCAL−00001" summary="Removed Old Cookie Attempt, Implemented new Authorization and Authentication along with tests.">
+      <option name="closed" value="true" />
+      <created>1731603061519</created>
+      <option name="number" value="LOCAL−00001" />
+      <option name="presentableId" value="LOCAL−00001" />
+      <updated>1731603061519</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,5 +248,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Removed Old Cookie Attempt, Implemented new Authorization and Authentication along with tests." />
+    <MESSAGE value="Fixed authentication error and updated some users" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed authentication error and updated some users" />
   </component>
 </project>
