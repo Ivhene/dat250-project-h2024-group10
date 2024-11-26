@@ -1,6 +1,6 @@
 "use client";
 
-import { getUser, signOut } from "@/lib/API";
+//import { ,signOut } from "@/lib/API";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import {
@@ -13,8 +13,10 @@ import {
 } from "../ui/dialog";
 import CreatePollForm from "./CreateFormPoll";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CommonNavbar() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   /*const user = await getUser();
 
@@ -24,6 +26,11 @@ export default function CommonNavbar() {
 
   function close() {
     setOpen(false);
+  }
+
+  function signOut() {
+    localStorage.removeItem("authToken");
+    router.push("/");
   }
 
   return (

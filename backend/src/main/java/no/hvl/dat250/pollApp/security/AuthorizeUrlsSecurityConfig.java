@@ -24,8 +24,9 @@ public class AuthorizeUrlsSecurityConfig {
                 .httpBasic().disable() // Disable Basic Auth if not needed
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         // Restrict specific endpoints
-                        .requestMatchers(HttpMethod.POST, "/polls/**").denyAll()
-                        .requestMatchers("/users/**").denyAll()
+                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/polls/**").hasAuthority("USER")
+                        .requestMatchers("/users/**").hasAuthority("USER")
                         // Allow all other endpoints
                         .anyRequest().permitAll()
                 )

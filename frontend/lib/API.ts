@@ -9,7 +9,7 @@ const url = "http://localhost:8080"; // Base backend URL
  * Login the user by fetching the token from the backend and storing it in localStorage.
  */
 export async function login(username: string, password: string) {
-  const response = await fetch(`${url}/auth/login`, {
+  const response = await fetch(`${url}/api/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -25,11 +25,7 @@ export async function login(username: string, password: string) {
 
   const { token } = await response.json();
 
-  // Store token in localStorage
-  localStorage.setItem("authToken", token);
-
-  // Return decoded user details for immediate use
-  return getUserFromToken(token);
+  return token;
 }
 
 /**
@@ -47,7 +43,6 @@ export async function getUserFromToken(token: string) {
 
     return {
       username: decoded.sub,
-      email: decoded.email,
     };
   } catch (error) {
     console.error("Failed to decode token:", error);
@@ -60,10 +55,9 @@ export async function getUserFromToken(token: string) {
  */
 export async function fetchWithAuth(
   endpoint: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  token: string
 ) {
-  const token = localStorage.getItem("authToken");
-
   if (!token) {
     throw new Error("User is not authenticated");
   }
@@ -88,9 +82,7 @@ export async function fetchWithAuth(
 /**
  * Check if the user is currently logged in by verifying the token.
  */
-export async function checkUserLoggedIn() {
-  const token = localStorage.getItem("authToken");
-
+export async function checkUserLoggedIn(token: string) {
   if (!token) {
     return false;
   }
@@ -116,7 +108,7 @@ export async function logout() {
  * Fetch all users (requires authentication).
  */
 export async function getUsers() {
-  const response = await fetchWithAuth("/users", { method: "GET" });
+  const response = await fetch(`${url}/users`, { method: "GET" });
 
   if (!response.ok) {
     throw new Error("Failed to fetch users");
@@ -128,11 +120,15 @@ export async function getUsers() {
 /**
  * Fetch a user by username (requires authentication).
  */
-export async function getUserByUsername(username: string) {
-  const response = await fetchWithAuth(`/users/${username}`, {
-    method: "GET",
-    cache: "no-store",
-  });
+export async function getUserByUsername(username: string, token: string) {
+  const response = await fetchWithAuth(
+    `/users/${username}`,
+    {
+      method: "GET",
+      cache: "no-store",
+    },
+    token
+  );
 
   if (!response.ok) {
     throw new Error("Failed to fetch user");
@@ -160,17 +156,14 @@ export async function createUser(user: User) {
 
   const { token } = await response.json();
 
-  // Store token in localStorage
-  localStorage.setItem("authToken", token);
-
-  return await response.json();
+  return token;
 }
 
 /**
  * Fetch all polls (requires authentication).
  */
 export async function getPolls() {
-  const response = await fetchWithAuth("/polls", {
+  const response = await fetch(`${url}/polls`, {
     method: "GET",
     cache: "no-store",
   });
@@ -186,7 +179,7 @@ export async function getPolls() {
  * Fetch a poll by its ID (requires authentication).
  */
 export async function getPollById(id: number) {
-  const response = await fetchWithAuth(`/polls/${id}`, {
+  const response = await fetch(`${url}/polls/${id}`, {
     method: "GET",
   });
 
@@ -200,11 +193,15 @@ export async function getPollById(id: number) {
 /**
  * Create a new poll (requires authentication).
  */
-export async function createPoll(poll: PollToSend) {
-  const response = await fetchWithAuth("/polls", {
-    method: "POST",
-    body: JSON.stringify(poll),
-  });
+export async function createPoll(poll: PollToSend, token: string) {
+  const response = await fetchWithAuth(
+    "/polls",
+    {
+      method: "POST",
+      body: JSON.stringify(poll),
+    },
+    token
+  );
 
   if (!response.ok) {
     const errorMessage = await response.text();
@@ -231,8 +228,8 @@ export async function createVote(voteoptionId: string, poll: Poll) {
     option: option,
   };
 
-  const response = await fetchWithAuth(
-    `/polls/${poll.id}/voteoptions/${voteoptionId}/votes`,
+  const response = await fetch(
+    `${url}/polls/${poll.id}/voteoptions/${voteoptionId}/votes`,
     {
       method: "POST",
       body: JSON.stringify(vote),
