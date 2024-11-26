@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -21,25 +20,26 @@ public class AuthorizeUrlsSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorizeHttpRequests) ->
-                        authorizeHttpRequests
-                                .requestMatchers("/**").hasRole("USER")
-                                .requestMatchers(HttpMethod.POST,"/polls/**").denyAll()
-                                .requestMatchers("/users/**").denyAll()
-                                .requestMatchers("/**").permitAll()
+                .csrf().disable() // Disable CSRF for testing purposes
+                .httpBasic().disable() // Disable Basic Auth if not needed
+                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
+                        // Restrict specific endpoints
+                        .requestMatchers(HttpMethod.POST, "/polls/**").denyAll()
+                        .requestMatchers("/users/**").denyAll()
+                        // Allow all other endpoints
+                        .anyRequest().permitAll()
                 )
-                .formLogin(withDefaults())
-                .httpBasic().disable()
-                .csrf().disable();
+                .formLogin().disable(); // Disable form-based login
         return http.build();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
+        // Create a default user for testing purposes
         UserDetails anonymous = User.withDefaultPasswordEncoder()
                 .username("anonymous")
                 .password("password")
-                .roles("ANONYMOUS") // Removed "ROLE_" prefix
+                .roles("USER") // Assign "USER" role
                 .build();
         return new InMemoryUserDetailsManager(anonymous);
     }
