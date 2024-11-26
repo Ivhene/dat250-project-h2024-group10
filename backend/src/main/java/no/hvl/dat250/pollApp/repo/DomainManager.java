@@ -249,8 +249,9 @@ public class DomainManager {
             userDetails = org.springframework.security.core.userdetails.User.withDefaultPasswordEncoder()
                     .username(authRequest.getUsername())
                     .password(authRequest.getPassword())
-                    .authorities("USER", "ANONYMOUS") // Remove "ROLE_" prefix here
+                    .authorities("ROLE_USER")
                     .build();
+
 
             // Add the user to the UserDetailsService (only works with InMemoryUserDetailsManager)
             if (userDetailsService instanceof InMemoryUserDetailsManager) {
