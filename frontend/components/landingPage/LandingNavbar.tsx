@@ -23,7 +23,7 @@ export default function LandingNavbar() {
               <DialogTitle>Sign in</DialogTitle>
             </DialogHeader>
             <DialogDescription>
-              Log in by writing your email or username below (TEMP USE USERNAME)
+              Log in by writing your username and password
             </DialogDescription>
             <SigninForm />
           </DialogContent>
