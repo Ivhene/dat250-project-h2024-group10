@@ -27,7 +27,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<AuthResponse> addUser(@RequestBody User user) {
+    public ResponseEntity<Object> addUser(@RequestBody User user) {
+        User usercheck = domainManager.getUserById(user.getUsername());
+
+        if(usercheck != null) {
+            return ResponseEntity.badRequest().body("Username already exists");
+        }
+
         User registeredUser = domainManager.addUser(user);
 
         AuthResponse token = domainManager.authenticate(new AuthRequest(registeredUser.getUsername(), registeredUser.getPassword()));

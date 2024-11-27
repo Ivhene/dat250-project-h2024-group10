@@ -31,7 +31,7 @@ public class AuthController {
         try {
 
             User user = domainManager.getUserById(authRequest.getUsername());
-            if(user != null) {
+            if(user == null) {
                 return ResponseEntity.badRequest().body("User already exists");
             }
 
