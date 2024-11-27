@@ -12,6 +12,9 @@ public class User {
     @JsonProperty("email")
     private String email;
 
+    @JsonProperty("password")
+    private String password;
+
     @JsonManagedReference("user-polls") // Unique reference name
     @JsonProperty("polls")
     private List<Poll> polls = new ArrayList<>();
@@ -47,6 +50,11 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @JsonProperty("password")
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
 
     @JsonProperty("polls")
     public List<Poll> getPolls() {

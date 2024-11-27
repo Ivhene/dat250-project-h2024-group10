@@ -4,6 +4,16 @@ import no.hvl.dat250.pollApp.entity.Poll;
 import no.hvl.dat250.pollApp.entity.User;
 import no.hvl.dat250.pollApp.entity.Vote;
 import no.hvl.dat250.pollApp.entity.VoteOption;
+import no.hvl.dat250.pollApp.security.AuthRequest;
+import no.hvl.dat250.pollApp.security.AuthResponse;
+import no.hvl.dat250.pollApp.security.JwtUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -15,6 +25,15 @@ public class DomainManager {
     private final Map<String, Poll> polls = new HashMap<>();
     private final Map<String, VoteOption> voteOptions = new HashMap<>();
     private final Map<String, Vote> votes = new HashMap<>();
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     // User Management
 
@@ -212,5 +231,38 @@ public class DomainManager {
         // Remove the vote from the voteOption and poll objects
         vote.getOption().getVotes().remove(vote);
         voteOptions.put(vote.getOption().getId(), vote.getOption());
+    }
+
+    public AuthResponse authenticate(AuthRequest authRequest) {
+
+        String token;
+        UserDetails userDetails;
+        // Load user details
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
+            );
+            userDetails = userDetailsService.loadUserByUsername(authRequest.getUsername());
+            token = jwtUtil.generateToken(userDetails.getUsername(), userDetails.getAuthorities());
+        } catch (AuthenticationException e) {
+            System.out.println("UsernameNotFoundException");
+            userDetails = org.springframework.security.core.userdetails.User.withDefaultPasswordEncoder()
+                    .username(authRequest.getUsername())
+                    .password(authRequest.getPassword())
+                    .authorities("ROLE_USER")
+                    .build();
+
+
+            // Add the user to the UserDetailsService (only works with InMemoryUserDetailsManager)
+            if (userDetailsService instanceof InMemoryUserDetailsManager) {
+                ((InMemoryUserDetailsManager) userDetailsService).createUser(userDetails);
+            } else {
+                throw new RuntimeException("UserDetailsService does not support adding new users");
+            }
+            token = jwtUtil.generateToken(userDetails.getUsername(), userDetails.getAuthorities());
+        }
+
+        // Generate the JWT token
+        return new AuthResponse(token);
     }
 }
