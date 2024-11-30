@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="415d58f2-4aa8-4a0c-b3ee-d1bbc7e64612" name="Changes" comment="Fixed authentication error and updated some users">
+    <list default="true" id="415d58f2-4aa8-4a0c-b3ee-d1bbc7e64612" name="Changes" comment="Secured Endpoints">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/security/AuthorizeUrlsSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/no/hvl/dat250/pollApp/security/AuthorizeUrlsSecurityConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -220,7 +219,9 @@
       <workItem from="1731595003563" duration="8027000" />
       <workItem from="1732022393814" duration="4029000" />
       <workItem from="1732541842489" duration="198000" />
-      <workItem from="1732542062067" duration="3474000" />
+      <workItem from="1732542062067" duration="3773000" />
+      <workItem from="1732626378958" duration="574000" />
+      <workItem from="1732628336683" duration="128000" />
     </task>
     <task id="LOCAL−00001" summary="Removed Old Cookie Attempt, Implemented new Authorization and Authentication along with tests.">
       <option name="closed" value="true" />
@@ -236,7 +237,14 @@
       <option name="presentableId" value="LOCAL−00002" />
       <updated>1732544265385</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL−00003" summary="Secured Endpoints">
+      <option name="closed" value="true" />
+      <created>1732545789737</created>
+      <option name="number" value="LOCAL−00003" />
+      <option name="presentableId" value="LOCAL−00003" />
+      <updated>1732545789737</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -256,6 +264,18 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Removed Old Cookie Attempt, Implemented new Authorization and Authentication along with tests." />
     <MESSAGE value="Fixed authentication error and updated some users" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed authentication error and updated some users" />
+    <MESSAGE value="Secured Endpoints" />
+    <option name="LAST_COMMIT_MESSAGE" value="Secured Endpoints" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/frontend/app/(noauth)/page.tsx</url>
+          <line>2</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
