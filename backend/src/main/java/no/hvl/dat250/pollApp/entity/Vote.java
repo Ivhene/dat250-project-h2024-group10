@@ -3,10 +3,16 @@ package no.hvl.dat250.pollApp.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+
 import java.time.Instant;
 import java.util.UUID;
 
+@Entity
 public class Vote {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("id")
     private String id;
 
@@ -14,10 +20,12 @@ public class Vote {
     @JsonProperty("publishedAt")
     private Instant publishedAt;
 
+    @ManyToOne
     @JsonBackReference("option-votes") // Unique reference name
     @JsonProperty("option")
     private VoteOption option;
 
+    @ManyToOne
     @JsonBackReference("user-votes") // Unique reference name
     @JsonProperty("user")
     private User user;

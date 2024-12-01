@@ -3,11 +3,17 @@ package no.hvl.dat250.pollApp.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 public class VoteOption {
+
+    @Id
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
     @JsonProperty("id")
     private String id;
 
@@ -17,10 +23,12 @@ public class VoteOption {
     @JsonProperty("presentationOrder")
     private int presentationOrder;
 
+    @ManyToOne
     @JsonBackReference("poll-options") // Unique reference name
     @JsonProperty("poll")
     private Poll poll;
 
+    @OneToMany(mappedBy = "option", cascade = CascadeType.ALL)
     @JsonManagedReference("option-votes") // Unique reference name
     @JsonProperty("votes")
     private List<Vote> votes = new ArrayList<>();

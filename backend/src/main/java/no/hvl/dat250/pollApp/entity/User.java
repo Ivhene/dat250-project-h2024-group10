@@ -2,10 +2,18 @@ package no.hvl.dat250.pollApp.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String id;
+
     @JsonProperty("username")
     private String username;
 
@@ -15,10 +23,12 @@ public class User {
     @JsonProperty("password")
     private String password;
 
+    @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL)
     @JsonManagedReference("user-polls") // Unique reference name
     @JsonProperty("polls")
     private List<Poll> polls = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonManagedReference("user-votes") // Unique reference name
     @JsonProperty("votes")
     private List<Vote> votes = new ArrayList<>();
