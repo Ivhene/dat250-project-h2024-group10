@@ -41,14 +41,15 @@ public class PollService {
             });
         });
 
+
         // Assign vote counts to each poll option
         polls.forEach(poll -> {
             poll.getOptions().forEach(option -> {
 
-                Map<String, Long> pollVotes = votesByPoll.get(poll.getId());
+                Map<String, Long> pollVotes = votesByPoll.get(poll.getId().toString());
 
                 if (pollVotes != null) {
-                    long voteCount = pollVotes.getOrDefault(option.getId(), 0L);
+                    long voteCount = pollVotes.getOrDefault(option.getId().toString(), 0L);
                     option.setCount(voteCount);
                 } else {
                     System.out.println("No votes found for Poll ID: " + poll.getId() + ", Option ID: " + option.getId());
