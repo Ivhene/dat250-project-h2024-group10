@@ -1,5 +1,6 @@
 "use client";
 
+import CommonNavbar from "@/components/authorizedPagesComponents/CommonNavbar";
 import LandingNavbar from "@/components/landingPage/LandingNavbar";
 import SigninForm from "@/components/landingPage/SigninForm";
 import SignupForm from "@/components/landingPage/SignupForm";
@@ -19,7 +20,7 @@ export default function Home() {
 
   return (
     <div className="h-full w-full">
-      <LandingNavbar />
+      <CommonNavbar />
       <div className="w-full flex flex-row gap-16 justify-center p-8 h-full items-center">
         <div className={`${panelStyling} flex flex-col justify-between`}>
           <div className="space-y-3">

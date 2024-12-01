@@ -36,7 +36,7 @@ public class UserController {
 
         User registeredUser = domainManager.addUser(user);
 
-        AuthResponse token = domainManager.authenticate(new AuthRequest(registeredUser.getUsername(), registeredUser.getPassword()));
+        AuthResponse token = domainManager.authenticate(new AuthRequest(user.getUsername(), user.getPassword()));
 
         return ResponseEntity.ok(token);
     }

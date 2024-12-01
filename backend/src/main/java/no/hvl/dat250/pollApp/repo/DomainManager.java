@@ -8,6 +8,7 @@ import no.hvl.dat250.pollApp.entity.VoteOption;
 import no.hvl.dat250.pollApp.security.AuthRequest;
 import no.hvl.dat250.pollApp.security.AuthResponse;
 import no.hvl.dat250.pollApp.security.JwtUtil;
+import no.hvl.dat250.pollApp.service.PasswordManager;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -47,6 +48,9 @@ public class DomainManager {
     // User Management
 
     public User addUser(User user) {
+        String salt = PasswordManager.generateSalt();
+        user.setSalt(salt);
+        user.setPassword(PasswordManager.hashing(user.getPassword(), salt));
         return userRepository.save(user);
     }
 

@@ -22,6 +22,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { createVote } from "@/lib/API";
+import { revalidatePath } from "next/cache";
 
 type FeedUIProps = {
   polls: Poll[];
@@ -50,6 +51,9 @@ export default function FeedUI({ polls }: FeedUIProps) {
             values.voteOption
           );
           createVote(parseInt(values.voteOption), poll);
+          /*setTimeout(() => {
+            window.location.reload();
+          }, 5000);*/
         }
 
         return (
@@ -95,8 +99,11 @@ export default function FeedUI({ polls }: FeedUIProps) {
                                       value={option.id.toString()}
                                     />
                                   </FormControl>
-                                  <FormLabel className="font-normal">
-                                    {option.caption}
+                                  <FormLabel className="font-normal w-full flex justify-between items-center">
+                                    <span>{option.caption}</span>
+                                    <span className="ml-auto">
+                                      {option.count}
+                                    </span>
                                   </FormLabel>
                                 </FormItem>
                               ))}

@@ -54,9 +54,11 @@ export default function UserPageUI({ user }: UserPageUIProps) {
                             key={option.id}
                           >
                             <p className="font-normal">{option.caption}</p>
-                            <p className="">{`${(
-                              (option.votes.length / totalVotes) *
-                              100
+                            <p className="">{`${(isNaN(
+                              (option.votes.length / totalVotes) * 100
+                            )
+                              ? 0
+                              : (option.votes.length / totalVotes) * 100
                             ).toFixed(0)}%`}</p>
                           </div>
                         ))}
@@ -67,7 +69,7 @@ export default function UserPageUI({ user }: UserPageUIProps) {
             })}
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="votes">
+        {/*<AccordionItem value="votes">
           <AccordionTrigger>Your votes</AccordionTrigger>
           <AccordionContent className="grid grid-cols-3 gap-4">
             {user.votes.map((vote) => {
@@ -76,6 +78,7 @@ export default function UserPageUI({ user }: UserPageUIProps) {
                   (sum, option) => sum + option.votes.length,
                   0
                 ) ?? 0; */
+        /*
               return (
                 <Card
                   className="h-full bg-neutral-100 shadow-lg border-neutral-300 flex flex-col"
@@ -101,14 +104,15 @@ export default function UserPageUI({ user }: UserPageUIProps) {
                               0
                             )}%`}</p>
                           </div>
-                        )) */}
+                        )) */
+        /*}
                     </div>
                   </CardContent>
                 </Card>
               );
             })}
           </AccordionContent>
-        </AccordionItem>
+        </AccordionItem> */}
       </Accordion>
     </div>
   );
