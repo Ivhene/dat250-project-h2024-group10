@@ -3,6 +3,7 @@ package no.hvl.dat250.pollApp.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.time.Instant;
@@ -28,6 +29,7 @@ public class Vote {
     @ManyToOne
     @JsonBackReference("user-votes") // Unique reference name
     @JsonProperty("user")
+    @Nullable
     private User user;
 
     public Vote() {

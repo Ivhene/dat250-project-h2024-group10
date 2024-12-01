@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rabbitmq.client.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import no.hvl.dat250.pollApp.repo.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class PollAggregator {
     private Channel channel;
 
     @Autowired
-    private VoteRepository voteRepository;
+    private VoteAggRepository voteRepository;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
