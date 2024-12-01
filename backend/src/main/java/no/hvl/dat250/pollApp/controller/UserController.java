@@ -1,7 +1,10 @@
 package no.hvl.dat250.pollApp.controller;
 
+
 import no.hvl.dat250.pollApp.entity.User;
 import no.hvl.dat250.pollApp.repo.DomainManager;
+import no.hvl.dat250.pollApp.security.AuthRequest;
+import no.hvl.dat250.pollApp.security.AuthResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +27,23 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user) {
+    public ResponseEntity<Object> addUser(@RequestBody User user) {
+        User usercheck = domainManager.getUserById(user.getUsername());
+
+        if(usercheck != null) {
+            return ResponseEntity.badRequest().body("Username already exists");
+        }
+
         User registeredUser = domainManager.addUser(user);
 
-        return ResponseEntity.status(201).body(registeredUser);
+        AuthResponse token = domainManager.authenticate(new AuthRequest(registeredUser.getUsername(), registeredUser.getPassword()));
+
+        return ResponseEntity.ok(token);
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUser(@PathVariable String userId) {
-        User user = domainManager.getUserById(userId); // userId is username
+        User user = domainManager.getUserById(userId);// userId is username
 
         return ResponseEntity.ok(user);
     }
@@ -50,4 +61,5 @@ public class UserController {
 
         return ResponseEntity.noContent().build();
     }
+
 }

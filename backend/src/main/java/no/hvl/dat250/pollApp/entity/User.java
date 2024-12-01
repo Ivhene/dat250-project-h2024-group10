@@ -2,20 +2,34 @@ package no.hvl.dat250.pollApp.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "app_user")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @JsonProperty("username")
     private String username;
 
     @JsonProperty("email")
     private String email;
 
+    @JsonProperty("password")
+    private String password;
+
+    @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference("user-polls") // Unique reference name
     @JsonProperty("polls")
     private List<Poll> polls = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference("user-votes") // Unique reference name
     @JsonProperty("votes")
     private List<Vote> votes = new ArrayList<>();
@@ -48,6 +62,11 @@ public class User {
         this.email = email;
     }
 
+    @JsonProperty("password")
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
+
     @JsonProperty("polls")
     public List<Poll> getPolls() {
         return polls;
@@ -60,6 +79,16 @@ public class User {
     @JsonProperty("votes")
     public List<Vote> getVotes() {
         return votes;
+    }
+
+    @JsonProperty("id")
+    public Long getId() {
+        return id;
+    }
+
+    @JsonProperty("id")
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setVotes(List<Vote> votes) {

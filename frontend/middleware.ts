@@ -25,9 +25,10 @@ export async function middleware(req: NextRequest) {
   //  const expired = await isSessionExpired();
 
   // If no session exists or session has expired, redirect to root ("/")
-  if (!signedIn /*|| expired */) {
-    return NextResponse.redirect(new URL("/", req.url));
-  }
+
+  //  if (!signedIn /*|| expired */) {
+  //    return NextResponse.redirect(new URL("/", req.url));
+  //  }
 
   // Allow the request to continue if the user is signed in
   return NextResponse.next();

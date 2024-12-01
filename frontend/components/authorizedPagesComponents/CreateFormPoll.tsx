@@ -23,7 +23,12 @@ import { cn } from "@/lib/utils";
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
-import { createPoll, getUser, getUserByUsername } from "@/lib/API";
+import {
+  checkUserLoggedIn,
+  createPoll,
+  getUserByUsername,
+  getUserFromToken,
+} from "@/lib/API";
 import { Poll, PollToSend } from "@/lib/types";
 import { generateId } from "@/lib/functions";
 import { revalidatePath } from "next/cache";
@@ -68,8 +73,10 @@ export default function CreatePollForm({ close }: CreatePollFormProps) {
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const token = localStorage.getItem("authToken") ?? "";
+    const username = (await getUserFromToken(token)).username;
     // TEMP
-    const user = await getUserByUsername("Test");
+    const user = await getUserByUsername(username, token ?? "");
     // Format date without milliseconds
     const publishedAt = new Date(Date.now()).toISOString().split(".")[0] + "Z";
     const validUntilFormatted =
@@ -93,7 +100,7 @@ export default function CreatePollForm({ close }: CreatePollFormProps) {
         }),
     };
 
-    newPoll = await createPoll(newPoll);
+    newPoll = await createPoll(newPoll, token ?? "");
     close();
     window.location.reload();
   }

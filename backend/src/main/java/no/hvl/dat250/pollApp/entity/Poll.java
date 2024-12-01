@@ -4,14 +4,20 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.*;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 public class Poll {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("id")
-    private String id;
+    private Long id;
 
     @JsonProperty("question")
     private String question;
@@ -24,10 +30,12 @@ public class Poll {
     @JsonProperty("validUntil")
     private Instant validUntil;
 
+    @ManyToOne
     @JsonBackReference("user-polls") // Unique reference name
     @JsonProperty("createdUser")
     private User createdUser;
 
+    @OneToMany(mappedBy = "poll", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference("poll-options") // Unique reference name
     @JsonProperty("options")
     private List<VoteOption> options = new ArrayList<>();
@@ -36,7 +44,6 @@ public class Poll {
     }
 
     public Poll(String question, Instant validUntil, User createdUser) {
-        this.id = UUID.randomUUID().toString();
         this.question = question;
         this.publishedAt = Instant.now();
         this.validUntil = validUntil;
@@ -44,11 +51,11 @@ public class Poll {
     }
 
     @JsonProperty("id")
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
