@@ -22,9 +22,9 @@ import java.util.*;
 @Component
 public class DomainManager {
     private final Map<String, User> users = new HashMap<>();
-    private final Map<String, Poll> polls = new HashMap<>();
-    private final Map<String, VoteOption> voteOptions = new HashMap<>();
-    private final Map<String, Vote> votes = new HashMap<>();
+    private final Map<Long, Poll> polls = new HashMap<>();
+    private final Map<Long, VoteOption> voteOptions = new HashMap<>();
+    private final Map<Long, Vote> votes = new HashMap<>();
 
     @Autowired
     private AuthenticationManager authenticationManager;

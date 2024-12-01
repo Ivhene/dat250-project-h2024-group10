@@ -17,7 +17,7 @@ public class Poll {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("id")
-    private String id;
+    private Long id;
 
     @JsonProperty("question")
     private String question;
@@ -44,7 +44,6 @@ public class Poll {
     }
 
     public Poll(String question, Instant validUntil, User createdUser) {
-        this.id = UUID.randomUUID().toString();
         this.question = question;
         this.publishedAt = Instant.now();
         this.validUntil = validUntil;
@@ -52,11 +51,11 @@ public class Poll {
     }
 
     @JsonProperty("id")
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

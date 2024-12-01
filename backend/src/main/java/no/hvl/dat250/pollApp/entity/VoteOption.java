@@ -15,7 +15,7 @@ public class VoteOption {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     @JsonProperty("id")
-    private String id;
+    private Long id;
 
     @JsonProperty("caption")
     private String caption;
@@ -37,18 +37,17 @@ public class VoteOption {
     }
 
     public VoteOption(String caption, int presentationOrder, Poll poll) {
-        this.id = UUID.randomUUID().toString();
         this.caption = caption;
         this.presentationOrder = presentationOrder;
         this.poll = poll;
     }
 
     @JsonProperty("id")
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

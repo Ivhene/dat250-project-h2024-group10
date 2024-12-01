@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "app_user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private Long id;
 
     @JsonProperty("username")
     private String username;

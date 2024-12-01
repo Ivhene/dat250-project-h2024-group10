@@ -203,7 +203,8 @@ export async function createPoll(poll: PollToSend, token: string) {
     },
     token
   );
-
+  console.log("Poll payload:", poll);
+  console.log("Server response:", response.status, await response.text());
   if (!response.ok) {
     const errorMessage = await response.text();
     console.error("Failed to create poll:", errorMessage);
@@ -216,7 +217,7 @@ export async function createPoll(poll: PollToSend, token: string) {
 /**
  * Create a vote for a poll option (requires authentication).
  */
-export async function createVote(voteoptionId: string, poll: Poll) {
+export async function createVote(voteoptionId: number, poll: Poll) {
   const option = poll.options.find((option) => option.id === voteoptionId);
 
   if (!option) {

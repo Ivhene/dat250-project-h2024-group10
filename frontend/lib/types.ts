@@ -7,14 +7,14 @@ export type User = {
 };
 
 export type Vote = {
-  id: string;
+  id: number;
   publishedAt: string;
   user: User;
   voteOption: VoteOption;
 };
 
 export type Poll = {
-  id: string;
+  id: number;
   question: string;
   publishedAt: string;
   validUntil: string;
@@ -23,7 +23,7 @@ export type Poll = {
 };
 
 export type VoteOption = {
-  id: string;
+  id: number | string;
   caption: string;
   presentationOrder: number;
   poll: Poll | null;
@@ -31,7 +31,7 @@ export type VoteOption = {
 };
 
 export type PollToSend = {
-  id: string;
+  id: number;
   question: string;
   publishedAt: string;
   validUntil: string;
@@ -40,7 +40,7 @@ export type PollToSend = {
 };
 
 export type VoteOptionToSend = {
-  id: string;
+  id: number;
   caption: string;
   presentationOrder: number;
   votes: Vote[];

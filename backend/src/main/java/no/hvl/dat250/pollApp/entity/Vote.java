@@ -14,7 +14,7 @@ public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty("id")
-    private String id;
+    private Long id;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "UTC")
     @JsonProperty("publishedAt")
@@ -34,18 +34,17 @@ public class Vote {
     }
 
     public Vote(User user, VoteOption option) {
-        this.id = UUID.randomUUID().toString();
         this.publishedAt = Instant.now();
         this.user = user;
         this.option = option;
     }
 
     @JsonProperty("id")
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
