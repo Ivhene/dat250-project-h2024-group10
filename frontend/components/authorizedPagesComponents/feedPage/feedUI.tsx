@@ -28,7 +28,7 @@ type FeedUIProps = {
 };
 
 const FormSchema = z.object({
-  voteOption: z.number().min(1, "Please select an option."),
+  voteOption: z.string().min(1, "Please select an option."),
 });
 
 export default function FeedUI({ polls }: FeedUIProps) {
@@ -49,7 +49,7 @@ export default function FeedUI({ polls }: FeedUIProps) {
             `Poll ID: ${poll.id} - Selected Option:`,
             values.voteOption
           );
-          createVote(values.voteOption, poll);
+          createVote(parseInt(values.voteOption), poll);
         }
 
         return (
@@ -75,7 +75,9 @@ export default function FeedUI({ polls }: FeedUIProps) {
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
-                            value={field.value}
+                            value={
+                              field.value ? field.value.toString() : undefined
+                            }
                             className="flex flex-col space-y-2"
                           >
                             {poll.options
@@ -89,7 +91,9 @@ export default function FeedUI({ polls }: FeedUIProps) {
                                   key={option.id}
                                 >
                                   <FormControl>
-                                    <RadioGroupItem value={option.id.toString()} />
+                                    <RadioGroupItem
+                                      value={option.id.toString()}
+                                    />
                                   </FormControl>
                                   <FormLabel className="font-normal">
                                     {option.caption}

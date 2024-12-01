@@ -3,8 +3,8 @@
 import { Poll, PollToSend, User } from "./types";
 import { generateId } from "./functions";
 
-// const url = "http://localhost:8080"; // Base backend URL
-const url = "https://dat250-project-h2024-group10.onrender.com";
+const url = "http://localhost:8080"; // Base backend URL
+// const url = "https://dat250-project-h2024-group10.onrender.com";
 
 /**
  * Login the user by fetching the token from the backend and storing it in localStorage.
@@ -225,7 +225,7 @@ export async function createVote(voteoptionId: number, poll: Poll) {
   }
 
   const vote = {
-    id: generateId(),
+    // id: generateId(),
     publishedAt: new Date(Date.now()).toISOString().split(".")[0] + "Z",
     option: option,
   };
@@ -234,6 +234,9 @@ export async function createVote(voteoptionId: number, poll: Poll) {
     `${url}/polls/${poll.id}/voteoptions/${voteoptionId}/votes`,
     {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json", // Set Content-Type to application/json
+      },
       body: JSON.stringify(vote),
     }
   );
