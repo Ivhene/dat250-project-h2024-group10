@@ -24,12 +24,12 @@ public class User {
     @JsonProperty("password")
     private String password;
 
-    @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference("user-polls") // Unique reference name
     @JsonProperty("polls")
     private List<Poll> polls = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference("user-votes") // Unique reference name
     @JsonProperty("votes")
     private List<Vote> votes = new ArrayList<>();
@@ -79,6 +79,16 @@ public class User {
     @JsonProperty("votes")
     public List<Vote> getVotes() {
         return votes;
+    }
+
+    @JsonProperty("id")
+    public Long getId() {
+        return id;
+    }
+
+    @JsonProperty("id")
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public void setVotes(List<Vote> votes) {

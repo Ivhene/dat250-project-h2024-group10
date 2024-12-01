@@ -18,21 +18,21 @@ public class VoteController {
     private DomainManager domainManager;
 
     @GetMapping
-    public ResponseEntity<List<Vote>> getVotes(@PathVariable String pollId) {
+    public ResponseEntity<List<Vote>> getVotes(@PathVariable Long pollId) {
         List<Vote> votes = new ArrayList<>(domainManager.getVotesByPollId(pollId));
 
         return ResponseEntity.ok(votes);
     }
 
     @PostMapping
-    public ResponseEntity<Vote> createVote(@PathVariable String voteoptionId, @RequestBody Vote vote) {
+    public ResponseEntity<Vote> createVote(@PathVariable Long voteoptionId, @RequestBody Vote vote) {
         Vote submittedVote = domainManager.castVote(voteoptionId, vote);
 
         return ResponseEntity.ok(submittedVote);
     }
 
     @DeleteMapping("/{voteId}")
-    public ResponseEntity<Vote> deleteVote(@PathVariable String voteId) {
+    public ResponseEntity<Vote> deleteVote(@PathVariable Long voteId) {
         domainManager.deleteVote(voteId);
 
         return ResponseEntity.noContent().build();

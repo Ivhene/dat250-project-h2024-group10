@@ -17,14 +17,14 @@ public class VoteOptionController {
     private DomainManager domainManager;
 
     @GetMapping
-    public ResponseEntity<List<VoteOption>> getVoteOptions(@PathVariable String pollId) {
+    public ResponseEntity<List<VoteOption>> getVoteOptions(@PathVariable Long pollId) {
         List<VoteOption> options = domainManager.getVoteOptionsByPollId(pollId).stream().toList();
 
         return ResponseEntity.ok(options);
     }
 
     @GetMapping("/{voteoptionId}")
-    public ResponseEntity<VoteOption> getVoteOption(@PathVariable String voteoptionId) {
+    public ResponseEntity<VoteOption> getVoteOption(@PathVariable Long voteoptionId) {
         VoteOption voteOption = domainManager.getVoteOptionById(voteoptionId);
 
         return ResponseEntity.ok(voteOption);

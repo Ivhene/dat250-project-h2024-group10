@@ -28,7 +28,7 @@ public class VoteOption {
     @JsonProperty("poll")
     private Poll poll;
 
-    @OneToMany(mappedBy = "option", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "option", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference("option-votes") // Unique reference name
     @JsonProperty("votes")
     private List<Vote> votes = new ArrayList<>();

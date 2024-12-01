@@ -29,19 +29,19 @@ public class PollController {
     }
 
     @GetMapping(value = "/{pollId}", produces = "application/json")
-    public ResponseEntity<Poll> getPollById(@PathVariable String pollId) {
+    public ResponseEntity<Poll> getPollById(@PathVariable Long pollId) {
         Poll poll = domainManager.getPollById(pollId);
         return ResponseEntity.ok(poll);
     }
 
     @PutMapping(value = "/{pollId}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Poll> updatePoll(@PathVariable String pollId, @RequestBody Poll poll) {
+    public ResponseEntity<Poll> updatePoll(@PathVariable Long pollId, @RequestBody Poll poll) {
         Poll updatedPoll = domainManager.createPoll(poll);
         return ResponseEntity.ok(updatedPoll);
     }
 
     @DeleteMapping("/{pollId}")
-    public ResponseEntity<Void> deletePoll(@PathVariable String pollId) {
+    public ResponseEntity<Void> deletePoll(@PathVariable Long pollId) {
         domainManager.deletePoll(pollId);
         return ResponseEntity.noContent().build();
     }
