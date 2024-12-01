@@ -1,5 +1,7 @@
 package no.hvl.dat250.pollApp.controller;
 
+import no.hvl.dat250.pollApp.service.PollService;
+import no.hvl.dat250.pollApp.aggregation.PollWithVotes;
 import no.hvl.dat250.pollApp.entity.Poll;
 import no.hvl.dat250.pollApp.repo.DomainManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,26 @@ import java.util.List;
 @RequestMapping("/polls")
 public class PollController {
 
-    @Autowired
     private DomainManager domainManager;
+    private PollService pollService;
 
+    @Autowired
+    public PollController(DomainManager domainManager, PollService pollService) {
+        this.domainManager = domainManager;
+        this.pollService = pollService;
+    }
+
+//    @GetMapping(produces = "application/json")
+//    public ResponseEntity<List<Poll>> getPolls() {
+//        List<Poll> polls = domainManager.getAllPolls().stream().toList();
+//        return ResponseEntity.ok(polls);
+//    }
+
+    // Fetches both Polls and their voteOptions with the current count for each option
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<Poll>> getPolls() {
-        List<Poll> polls = domainManager.getAllPolls().stream().toList();
-        return ResponseEntity.ok(polls);
+    public ResponseEntity<List<Poll>> getPollsWithVoteCounts() {
+        List<Poll> response = pollService.getPollsWithVoteCounts();
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")

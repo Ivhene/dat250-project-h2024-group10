@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +17,8 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("polls/{pollId}/voteoptions/{voteoptionId}/votes")
 public class VoteController {
+
+    private static final String EXCHANGE_NAME = "vote_events";
 
     @Autowired
     private DomainManager domainManager;
@@ -25,8 +31,27 @@ public class VoteController {
     }
 
     @PostMapping
-    public ResponseEntity<Vote> createVote(@PathVariable Long voteoptionId, @RequestBody Vote vote) {
+    public ResponseEntity<Vote> createVote(@PathVariable Long pollId, @PathVariable Long voteoptionId, @RequestBody Vote vote) {
         Vote submittedVote = domainManager.castVote(voteoptionId, vote);
+
+        try {
+            ConnectionFactory factory = new ConnectionFactory();
+            factory.setHost("localhost");
+            try (Connection connection = factory.newConnection(); Channel channel = connection.createChannel()) {
+                channel.exchangeDeclare(EXCHANGE_NAME, "topic");
+
+                String message = String.format("{\"pollId\":\"%s\",\"voteOptionId\":\"%s\",\"voteId\":\"%s\"}",
+                        pollId, voteoptionId, vote.getId());
+
+                String routingKey = "vote.cast";
+                channel.basicPublish(EXCHANGE_NAME, routingKey, null, message.getBytes());
+                System.out.println("Sent message: " + message);
+
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         return ResponseEntity.ok(submittedVote);
     }
