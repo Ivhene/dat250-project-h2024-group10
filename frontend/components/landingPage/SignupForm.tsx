@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 const formSchema = z.object({
   username: z.string().min(2).max(50),
   email: z.string().min(3).max(320),
+  password: z.string().min(2).max(30),
 });
 
 export default function SignupForm() {
@@ -32,6 +33,7 @@ export default function SignupForm() {
     defaultValues: {
       username: "",
       email: "",
+      password: "",
     },
   });
 
@@ -39,16 +41,15 @@ export default function SignupForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    const user = await createUser({
+    const token = await createUser({
       ...values,
-      password: "",
       votes: [],
       polls: [],
     });
 
-    if (user && user.username && user.email) {
-      router.push("/feed");
-    }
+    localStorage.setItem("authToken", token);
+
+    router.push("/feed");
   }
 
   return (
@@ -75,6 +76,19 @@ export default function SignupForm() {
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder="example@gmail.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="*****" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

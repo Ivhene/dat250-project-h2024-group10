@@ -1,5 +1,6 @@
 package no.hvl.dat250.pollApp.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,36 +13,38 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import static org.springframework.security.config.Customizer.withDefaults;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class AuthorizeUrlsSecurityConfig {
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorizeHttpRequests) ->
-                        authorizeHttpRequests
-                                .requestMatchers("/**").hasRole("USER")
-                                .requestMatchers(HttpMethod.POST,"/polls/**").denyAll()
-                                .requestMatchers("/users/**").denyAll()
-                                .requestMatchers("/**").permitAll()
+                .csrf().disable()
+                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers("/users/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/polls").authenticated()
+                        .anyRequest().permitAll()
                 )
-                .formLogin(withDefaults())
-                .httpBasic().disable()
-                .csrf().disable();
+                .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     @Bean
     public UserDetailsService userDetailsService() {
-        UserDetails anonymous = User.withDefaultPasswordEncoder()
-                .username("anonymous")
+        // Create a default user for testing purposes
+        UserDetails defaultUser = User.withDefaultPasswordEncoder()
+                .username("defaultUser")
                 .password("password")
-                .roles("ANONYMOUS") // Removed "ROLE_" prefix
+                .roles("USER")
                 .build();
-        return new InMemoryUserDetailsManager(anonymous);
+        return new InMemoryUserDetailsManager(defaultUser);
     }
 
     @Bean

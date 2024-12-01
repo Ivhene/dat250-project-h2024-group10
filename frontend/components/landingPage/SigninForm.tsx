@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   user: z.string().min(2).max(50),
+  password: z.string().min(2).max(30),
 });
 
 export default function SigninForm() {
@@ -30,6 +31,7 @@ export default function SigninForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       user: "",
+      password: "",
     },
   });
 
@@ -39,7 +41,13 @@ export default function SigninForm() {
     // ✅ This will be type-safe and validated.
 
     //const user = await getUserByUsername(values.user);
-    await login(values.user, "pass");
+    const token = await login(values.user, values.password);
+
+    // Store token in localStorage
+    localStorage.setItem("authToken", token);
+
+    console.log(token);
+
     // if (user && user.username && user.email) {
     router.push("/feed");
     //}
@@ -56,6 +64,19 @@ export default function SigninForm() {
               <FormLabel>Username</FormLabel>
               <FormControl>
                 <Input placeholder="username" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Password</FormLabel>
+              <FormControl>
+                <Input type="password" placeholder="*****" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

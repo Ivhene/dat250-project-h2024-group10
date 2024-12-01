@@ -20,66 +20,47 @@ public class JwtUtil {
 
     // Generate a JWT token
     public String generateToken(String username, Collection<? extends GrantedAuthority> roles) {
-        System.out.println("Generating token");
+        List<String> roleNames = roles.stream()
+                .map(GrantedAuthority::getAuthority)
+                .map(role -> role.startsWith("ROLE_") ? role : "ROLE_" + role) // Ensure ROLE_ prefix
+                .toList();
+
         return Jwts.builder()
                 .subject(username)
-                .claim("roles", roles)
+                .claim("roles", roleNames) // Add roles to token
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(key)
                 .compact();
     }
 
-    // Extract the username from the token
-    public String extractUsername(String token) {
-        try {
-            Claims claims = Jwts.parser() // Create a parser builder
-                    .verifyWith(key) // Set the signing key (same key used for signing the token)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload(); // Get the claims body
-
-            return claims.getSubject(); // Get and return the subject (username)
-        } catch (Exception e) {
-            System.err.println("Error extracting username: " + e.getMessage());
-            return null; // or throw a custom exception
-        }
-    }
-
-    // Validate if the token is expired
-    public boolean isTokenExpired(String token) {
-        return getExpirationDate(token).before(new Date());
-    }
-
-    // Get the expiration date from the token
-    public Date getExpirationDate(String token) {
-        try {
-            Claims claims = Jwts.parser() // Create a parser builder
-                    .verifyWith(key) // Set the signing key (same key used for signing the token)
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload(); // Get the claims body
-
-            return claims.getExpiration(); // Get and return the subject (username)
-        } catch (Exception e) {
-            System.err.println("Error getting Expiration Date: " + e.getMessage());
-            return null; // or throw a custom exception
-        }
-    }
-
-    // Validate the token with respect to the user
-    public boolean validateToken(String token, String username) {
-        return (username.equals(extractUsername(token)) && !isTokenExpired(token));
-    }
-
-    public List<String> extractRoles(String token) {
-        Claims claims = Jwts.parser()
-                .verifyWith(key)
+    // Extract claims from token
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .setSigningKey(key) // Use the signing key
                 .build()
-                .parseUnsecuredClaims(token)
-                .getPayload();
-
-        return (List<String>) claims.get("roles");
+                .parseClaimsJws(token) // Parse the token
+                .getBody(); // Get the claims
     }
 
+    // Extract username from token
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    // Extract roles
+    public List<String> extractRoles(String token) {
+        return (List<String>) extractAllClaims(token).get("roles");
+    }
+
+    // Validate token
+    public boolean validateToken(String token, String username) {
+        String extractedUsername = extractUsername(token);
+        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    }
+
+    // Check token expiration
+    public boolean isTokenExpired(String token) {
+        return extractAllClaims(token).getExpiration().before(new Date());
+    }
 }
