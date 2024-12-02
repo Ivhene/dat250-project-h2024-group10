@@ -3,8 +3,8 @@
 import { Poll, PollToSend, User } from "./types";
 import { revalidatePath } from "next/cache";
 
-// const url = "http://localhost:8080"; // Base backend URL
-const url = "https://dat250-project-h2024-group10.onrender.com";
+const url = "http://localhost:8080"; // Base backend URL
+// const url = "https://dat250-project-h2024-group10.onrender.com";
 
 /**
  * Login the user by fetching the token from the backend and storing it in localStorage.

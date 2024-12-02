@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import RenderTimeTracker from "@/components/AppWrapper";
+import AppWrapper from "@/components/AppWrapper";
 
 export const metadata: Metadata = {
   title: "Feed app",
@@ -13,7 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased h-screen w-full`}>{children}</body>
+      <body className={`antialiased h-screen w-full`}>
+        <AppWrapper children={children}></AppWrapper>
+      </body>
     </html>
   );
 }
