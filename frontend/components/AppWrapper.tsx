@@ -18,28 +18,29 @@ export default function AppWrapper({
         ? `navigation-start-${from}`
         : "initial-render-start";
       const endMark = `navigation-end-${to}`;
+      const measureName = from
+        ? `Render Time from '${from}' to '${to}'`
+        : `Initial Render Time for '${to}'`;
 
+      // Mark the start of rendering
       performance.mark(startMark);
-      requestAnimationFrame(() => {
-        performance.mark(endMark);
-        performance.measure("Render Time", startMark, endMark);
 
-        const measures = performance.getEntriesByName("Render Time");
-        if (measures.length > 0) {
-          if (from) {
-            console.log(
-              `Render Time from '${from}' to '${to}':`,
-              measures[0].duration,
-              "ms"
-            );
-          } else {
-            console.log(
-              `Initial Render Time for '${to}':`,
-              measures[0].duration,
-              "ms"
-            );
+      // Wait until the next animation frame + a small delay to ensure React has completed rendering
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          performance.mark(endMark);
+          performance.measure(measureName, startMark, endMark);
+
+          const measures = performance.getEntriesByName(measureName);
+          if (measures.length > 0) {
+            console.log(`${measureName}:`, measures[0].duration, "ms");
           }
-        }
+
+          // Clear marks and measures to avoid conflicts
+          performance.clearMarks(startMark);
+          performance.clearMarks(endMark);
+          performance.clearMeasures(measureName);
+        }, 1000); // Adjust delay as necessary (50ms works for most cases)
       });
     };
 
