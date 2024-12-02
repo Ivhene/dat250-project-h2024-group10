@@ -9,7 +9,7 @@ export default async function FeedDataFetcher() {
 
     if (polls) {
       polls = polls.filter(
-        (poll: any) =>
+        (poll) =>
           poll.validUntil >
           new Date(Date.now()).toISOString().split(".")[0] + "Z"
       );
