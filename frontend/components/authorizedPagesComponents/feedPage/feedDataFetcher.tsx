@@ -3,13 +3,19 @@ import FeedUI from "./feedUI";
 import { Poll } from "@/lib/types";
 
 export default async function FeedDataFetcher() {
-  let polls = await getPolls();
+  let polls: Poll[] = [];
+  try {
+    polls = await getPolls();
 
-  if (polls) {
-    polls = polls.filter(
-      (poll: any) =>
-        poll.validUntil > new Date(Date.now()).toISOString().split(".")[0] + "Z"
-    );
+    if (polls) {
+      polls = polls.filter(
+        (poll: any) =>
+          poll.validUntil >
+          new Date(Date.now()).toISOString().split(".")[0] + "Z"
+      );
+    }
+  } catch {
+    polls = [];
   }
 
   return <FeedUI polls={polls} />;
