@@ -5,10 +5,12 @@ import { Poll } from "@/lib/types";
 export default async function FeedDataFetcher() {
   let polls: Poll[] = await getPolls();
 
-  polls = polls.filter(
-    (poll) =>
-      poll.validUntil > new Date(Date.now()).toISOString().split(".")[0] + "Z"
-  );
+  if (polls) {
+    polls = polls.filter(
+      (poll) =>
+        poll.validUntil > new Date(Date.now()).toISOString().split(".")[0] + "Z"
+    );
+  }
 
   return <FeedUI polls={polls} />;
 }
