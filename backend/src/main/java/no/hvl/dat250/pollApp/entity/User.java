@@ -1,5 +1,6 @@
 package no.hvl.dat250.pollApp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -23,6 +24,9 @@ public class User {
 
     @JsonProperty("password")
     private String password;
+
+    @JsonIgnore
+    private String salt;
 
     @OneToMany(mappedBy = "createdUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference("user-polls") // Unique reference name
@@ -93,5 +97,13 @@ public class User {
 
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
+    }
+
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 }

@@ -1,7 +1,7 @@
 "use server";
 
 import { Poll, PollToSend, User } from "./types";
-import { generateId } from "./functions";
+import { revalidatePath } from "next/cache";
 
 const url = "http://localhost:8080"; // Base backend URL
 // const url = "https://dat250-project-h2024-group10.onrender.com";
@@ -126,7 +126,7 @@ export async function getUserByUsername(username: string, token: string) {
     `/users/${username}`,
     {
       method: "GET",
-      cache: "no-store",
+      next: { revalidate: 300 },
     },
     token
   );
@@ -166,7 +166,7 @@ export async function createUser(user: User) {
 export async function getPolls() {
   const response = await fetch(`${url}/polls`, {
     method: "GET",
-    cache: "no-store",
+    next: { revalidate: 300 },
   });
 
   if (!response.ok) {
@@ -203,13 +203,14 @@ export async function createPoll(poll: PollToSend, token: string) {
     },
     token
   );
-  console.log("Poll payload:", poll);
-  console.log("Server response:", response.status, await response.text());
   if (!response.ok) {
     const errorMessage = await response.text();
     console.error("Failed to create poll:", errorMessage);
     throw new Error("Failed to create poll");
   }
+
+  revalidatePath("/feed");
+  revalidatePath("/profile");
 
   return await response.json();
 }
@@ -246,6 +247,9 @@ export async function createVote(voteoptionId: number, poll: Poll) {
     console.error("Failed to create vote:", errorMessage);
     throw new Error("Failed to create vote");
   }
+
+  revalidatePath("/feed");
+  revalidatePath("/profile");
 
   return await response.json();
 }

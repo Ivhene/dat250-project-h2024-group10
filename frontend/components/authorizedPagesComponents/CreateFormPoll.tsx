@@ -83,7 +83,7 @@ export default function CreatePollForm({ close }: CreatePollFormProps) {
       new Date(values.validUntil).toISOString().split(".")[0] + "Z";
 
     let newPoll: PollToSend = {
-      id: generateId(),
+      // id: generateId(),
       question: values.question,
       publishedAt: publishedAt,
       validUntil: validUntilFormatted,
@@ -92,8 +92,9 @@ export default function CreatePollForm({ close }: CreatePollFormProps) {
         .filter((option) => option.trim() !== "")
         .map((option, index) => {
           return {
-            id: generateId(),
+            //id: generateId(),
             caption: option,
+            count: 0,
             presentationOrder: index,
             votes: [],
           };

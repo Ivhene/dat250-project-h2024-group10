@@ -28,10 +28,11 @@ export type VoteOption = {
   presentationOrder: number;
   poll: Poll | null;
   votes: Vote[];
+  count: number;
 };
 
 export type PollToSend = {
-  id: number;
+  // id: number;
   question: string;
   publishedAt: string;
   validUntil: string;
@@ -40,8 +41,9 @@ export type PollToSend = {
 };
 
 export type VoteOptionToSend = {
-  id: number;
+  // id: number;
   caption: string;
   presentationOrder: number;
+  count: number;
   votes: Vote[];
 };

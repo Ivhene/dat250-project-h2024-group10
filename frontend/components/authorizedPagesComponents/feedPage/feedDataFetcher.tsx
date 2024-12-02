@@ -1,8 +1,14 @@
 import { getPolls } from "@/lib/API";
 import FeedUI from "./feedUI";
+import { Poll } from "@/lib/types";
 
 export default async function FeedDataFetcher() {
-  const polls = await getPolls();
+  let polls: Poll[] = await getPolls();
+
+  polls = polls.filter(
+    (poll) =>
+      poll.validUntil > new Date(Date.now()).toISOString().split(".")[0] + "Z"
+  );
 
   return <FeedUI polls={polls} />;
 }

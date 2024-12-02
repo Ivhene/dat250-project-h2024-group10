@@ -33,6 +33,8 @@ public class VoteOption {
     @JsonProperty("votes")
     private List<Vote> votes = new ArrayList<>();
 
+    private long count;
+
     public VoteOption() {
     }
 
@@ -89,5 +91,13 @@ public class VoteOption {
 
     public void addVote(Vote vote) {
         votes.add(vote);
+    }
+
+    public long getCount() {
+        return count;
+    }
+
+    public void setCount(long count) {
+        this.count = count;
     }
 }

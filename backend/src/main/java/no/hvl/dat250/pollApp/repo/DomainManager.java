@@ -8,6 +8,7 @@ import no.hvl.dat250.pollApp.entity.VoteOption;
 import no.hvl.dat250.pollApp.security.AuthRequest;
 import no.hvl.dat250.pollApp.security.AuthResponse;
 import no.hvl.dat250.pollApp.security.JwtUtil;
+import no.hvl.dat250.pollApp.service.PasswordManager;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -47,6 +48,9 @@ public class DomainManager {
     // User Management
 
     public User addUser(User user) {
+        String salt = PasswordManager.generateSalt();
+        user.setSalt(salt);
+        user.setPassword(PasswordManager.hashing(user.getPassword(), salt));
         return userRepository.save(user);
     }
 
@@ -90,13 +94,23 @@ public class DomainManager {
 
     public Poll createPoll(Poll poll) {
         // Ensure options list is initialized and has at least 2 options
-        if (poll.getOptions() == null && poll.getOptions().size() > 1) {
-            return null;
+        if (poll.getOptions() == null || poll.getOptions().size() < 2) {
+            throw new IllegalArgumentException("A poll must have at least 2 options.");
         }
 
-        // Add poll to storage
+        // Ensure the `createdUser` is managed (already saved in the database)
+        if (poll.getCreatedUser() != null) {
+            User existingUser = userRepository.findByUsername(poll.getCreatedUser().getUsername())
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+            poll.setCreatedUser(existingUser); // Attach the managed `User` entity
+        } else {
+            throw new IllegalArgumentException("A poll must have a valid createdUser.");
+        }
+
+        // Save the poll entity
         pollRepository.save(poll);
 
+        // Set the poll reference for each option and save them
         for (VoteOption option : poll.getOptions()) {
             option.setPoll(poll); // Set the poll reference for each option
             voteOptionRepository.save(option);
@@ -104,6 +118,7 @@ public class DomainManager {
 
         return poll;
     }
+
 
 
     public Poll getPollById(Long pollId) {
@@ -154,6 +169,12 @@ public class DomainManager {
     // Vote Management
 
     public Vote castVote(Long voteOptionId, Vote vote) {
+        if (vote.getUser() != null) {
+            User existingUser = userRepository.findByUsername(vote.getUser().getUsername())
+                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+            vote.setUser(existingUser); // Attach the managed `User` entity
+        }
+
         VoteOption option = voteOptionRepository.findById(voteOptionId).orElseThrow(() -> new IllegalArgumentException("Invalid Vote Option ID"));
         vote.setOption(option);
 
