@@ -27,6 +27,7 @@ public class AuthorizeUrlsSecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Allow OPTIONS requests
                         .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers("/users/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/polls").authenticated()
@@ -35,6 +36,7 @@ public class AuthorizeUrlsSecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
 
     @Bean
     public UserDetailsService userDetailsService() {
